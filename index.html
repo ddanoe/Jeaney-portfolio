@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Portfolio – Jeaney Danoe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Base & Variables ─────────────────────────────────── */
+    :root {
+      --bg:        #0e0b0b;
+      --surface:   #181212;
+      --card:      #1f1818;
+      --border:    #2e2020;
+      --rose:      #c9706e;
+      --rose-soft: #e0a09e;
+      --rose-dim:  #3d1c1c;
+      --text:      #e8dede;
+      --muted:     #8c7a7a;
+      --radius:    14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--rose-dim); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--rose); }
+
+    /* ── Nav ──────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 2rem;
+      background: rgba(14, 11, 11, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--rose-soft);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--rose-soft); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--rose-soft);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      z-index: 99;
+      padding: 1rem 2rem;
+    }
+
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--rose-soft); }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 30%, rgba(201,112,110,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(201,112,110,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--rose-soft);
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 400px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-meta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .meta-chip {
+      background: var(--rose-dim);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.78rem;
+      color: var(--rose-soft);
+      letter-spacing: 0.05em;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: fadeIn 1.5s 1s ease both;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--rose), transparent);
+      animation: pulse 2s infinite;
+    }
+
+    /* ── Sections ─────────────────────────────────────────── */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--rose-soft);
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(to right, var(--rose), transparent);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* ── SWOTT Grid ───────────────────────────────────────── */
+    .swott-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .swott-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.6rem 1.6rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .swott-card:hover {
+      border-color: var(--rose);
+      transform: translateY(-3px);
+    }
+
+    .swott-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--rose), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .swott-card:hover::before { opacity: 1; }
+
+    .swott-letter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--rose-dim);
+      margin-bottom: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .swott-card:hover .swott-letter { color: var(--rose); }
+
+    .swott-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      margin-bottom: 0.8rem;
+    }
+
+    .swott-text {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── SMART Cards ──────────────────────────────────────── */
+    .smart-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .smart-goal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--rose-soft);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .smart-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .smart-row {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .smart-badge {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--rose-dim);
+      border: 1px solid var(--rose);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--rose-soft);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .smart-content-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 0.25rem;
+    }
+
+    .smart-content-text {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Personality ──────────────────────────────────────── */
+    .personality-hero {
+      background: linear-gradient(135deg, var(--rose-dim) 0%, var(--card) 100%);
+      border: 1px solid var(--rose);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .personality-type {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--rose-soft);
+      line-height: 1;
+    }
+
+    .personality-name {
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .trait-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .trait-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      transition: border-color 0.3s;
+    }
+
+    .trait-card:hover { border-color: var(--rose); }
+
+    .trait-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .trait-name {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .trait-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Kernkwaliteiten ──────────────────────────────────── */
+    .kk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .kk-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 1.2rem;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .kk-item:hover {
+      border-color: var(--rose);
+      transform: translateX(4px);
+    }
+
+    .kk-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--rose-dim);
+      line-height: 1;
+      transition: color 0.3s;
+    }
+
+    .kk-item:hover .kk-num { color: var(--rose); }
+
+    .kk-name {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      margin-bottom: 0.25rem;
+    }
+
+    .kk-desc {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem 4rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    footer strong {
+      color: var(--rose-soft);
+      font-weight: 400;
+    }
+
+    /* ── Animations ───────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      nav { padding: 1rem 1.4rem; }
+
+      section { padding: 4rem 1.4rem; }
+
+      .swott-grid { grid-template-columns: 1fr; }
+
+      .smart-row { grid-template-columns: 30px 1fr; }
+
+      .trait-grid { grid-template-columns: 1fr; }
+
+      .kk-item { grid-template-columns: 34px 1fr; gap: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">Jeaney Danoe</a>
+    <ul class="nav-links">
+      <li><a href="#swott">SWOTT</a></li>
+      <li><a href="#smart">SMART</a></li>
+      <li><a href="#persoonlijkheid">Persoonlijkheid</a></li>
+      <li><a href="#kernkwaliteiten">Kernkwaliteiten</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#swott" onclick="closeMenu()">SWOTT</a>
+    <a href="#smart" onclick="closeMenu()">SMART</a>
+    <a href="#persoonlijkheid" onclick="closeMenu()">Persoonlijkheid</a>
+    <a href="#kernkwaliteiten" onclick="closeMenu()">Kernkwaliteiten</a>
+  </div>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-bg"></div>
+    <p class="hero-tag">NBW 1 &nbsp;·&nbsp; E-Portfolio 2026</p>
+    <h1 class="hero-name">Jeaney<br /><em>Danoe</em></h1>
+    <p class="hero-sub">HLO Ochtend Cohort 2026 &nbsp;·&nbsp; Polytechnic College Suriname</p>
+    <div class="hero-meta">
+      <span class="meta-chip">SWOTT-analyse</span>
+      <span class="meta-chip">SMART-doelen</span>
+      <span class="meta-chip">ENFJ-T</span>
+      <span class="meta-chip">Kernkwaliteiten</span>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </div>
+
+  <!-- SWOTT -->
+  <section id="swott">
+    <p class="section-label reveal">Zelfanalyse</p>
+    <h2 class="section-title reveal">SWOTT<em>-analyse</em></h2>
+    <div class="section-divider reveal"></div>
+    <div class="swott-grid">
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">S</div>
+        <div class="swott-label">Strength · Sterkte</div>
+        <p class="swott-text">Discipline is een van mijn sterkste eigenschappen. Wanneer ik een doel heb, zet ik alles op alles en blijf ik doorzetten tot ik het op een goede en keurige manier heb bereikt.</p>
+      </div>
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">W</div>
+        <div class="swott-label">Weakness · Zwakte</div>
+        <p class="swott-text">Ik merk altijd op dat ik mezelf vergelijk met anderen — of het nu gaat om mijn uiterlijk, prestaties in sport of op school. Dit heb ik al van jongs af aan.</p>
+      </div>
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">O</div>
+        <div class="swott-label">Opportunities · Kansen</div>
+        <p class="swott-text">Ik wil graag mijn woordenschat uitbreiden en met meer zelfvertrouwen iets goed en correct kunnen uitleggen of vertellen.</p>
+      </div>
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">T</div>
+        <div class="swott-label">Threats · Bedreigingen</div>
+        <p class="swott-text">Door een blessure ervaar ik soms moeilijkheden bij het behalen van sportdoelen. Mijn focus ligt meer op studie, waardoor ik minder train — maar dit leidt wel tot goede schoolresultaten.</p>
+      </div>
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">T</div>
+        <div class="swott-label">Trends</div>
+        <p class="swott-text">Oudere generaties denken dat jongeren "te veel op de telefoon zijn", terwijl wij juist leren via YouTube, TikTok, Google en ChatGPT. Moderne technologie helpt mij enorm bij mijn leerproces.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SMART -->
+  <section id="smart">
+    <p class="section-label reveal">Persoonlijke ontwikkeling</p>
+    <h2 class="section-title reveal">SMART<em>-doelen</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <!-- Doel 1 -->
+    <div class="smart-block reveal">
+      <h3 class="smart-goal-title">Doel 1 — Beter omgaan met mijn emoties</h3>
+      <div class="smart-rows">
+        <div class="smart-row">
+          <div class="smart-badge">S</div>
+          <div>
+            <div class="smart-content-label">Specifiek</div>
+            <p class="smart-content-text">Ik wil beter omgaan met mijn emoties en ze beter uiten.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">M</div>
+          <div>
+            <div class="smart-content-label">Meetbaar</div>
+            <p class="smart-content-text">Als ik me op een bepaalde manier voel — blij, verdrietig of in een dip — schrijf ik mijn gevoelens op in mijn notities. Voor mij is dat de beste manier om mijn emoties te uiten.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">A</div>
+          <div>
+            <div class="smart-content-label">Acceptabel</div>
+            <p class="smart-content-text">Ik denk dat mijn doel haalbaar is, maar omdat ik het moeilijk vind om mijn emoties te uiten en er niet graag met anderen over praat, gaat het niet makkelijk zijn.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">R</div>
+          <div>
+            <div class="smart-content-label">Realistisch</div>
+            <p class="smart-content-text">Ook al heb ik het druk, ik zal proberen om wat meer over mijn gevoelens te schrijven.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">T</div>
+          <div>
+            <div class="smart-content-label">Tijdgebonden</div>
+            <p class="smart-content-text">Voordat ik ouder/volwassen word, wil ik al weten hoe ik omga met mijn emoties.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doel 2 -->
+    <div class="smart-block reveal">
+      <h3 class="smart-goal-title">Doel 2 — Beter worden in multi-tasken</h3>
+      <div class="smart-rows">
+        <div class="smart-row">
+          <div class="smart-badge">S</div>
+          <div>
+            <div class="smart-content-label">Specifiek</div>
+            <p class="smart-content-text">Ik wil school, sport en mijn vrije tijd beter combineren, zodat taken niet ophopen en ik minder stress ervaar.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">M</div>
+          <div>
+            <div class="smart-content-label">Meetbaar</div>
+            <p class="smart-content-text">Ik probeer elke dag een planning te maken in mijn notes op mijn telefoon van wat ik die dag moet doen.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">A</div>
+          <div>
+            <div class="smart-content-label">Acceptabel</div>
+            <p class="smart-content-text">Ik gebruik mijn notes/agenda om mijn schema beter te overzien, al doe ik dit nog niet elke dag consequent.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">R</div>
+          <div>
+            <div class="smart-content-label">Realistisch</div>
+            <p class="smart-content-text">Omdat ik al gewend ben om school en sport te combineren, kan ik dit verbeteren door beter te plannen.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">T</div>
+          <div>
+            <div class="smart-content-label">Tijdgebonden</div>
+            <p class="smart-content-text">Binnen 1 maand wil ik merken dat ik minder stress heb en alles beter kan combineren.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSOONLIJKHEID -->
+  <section id="persoonlijkheid">
+    <p class="section-label reveal">Wie ben ik</p>
+    <h2 class="section-title reveal">Persoonlijk<em>heidstest</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="personality-hero reveal">
+      <div class="personality-type">ENFJ-T</div>
+      <div class="personality-name">De Pleitbezorger · The Advocate</div>
+    </div>
+
+    <div class="trait-grid">
+      <div class="trait-card reveal">
+        <div class="trait-icon">🤝</div>
+        <div class="trait-name">Sociaal &amp; Warm</div>
+        <p class="trait-desc">Ik ben goed met mensen, maak makkelijk connecties en anderen voelen zich snel op hun gemak bij mij.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">💛</div>
+        <div class="trait-name">Empathisch</div>
+        <p class="trait-desc">Ik voel goed aan hoe anderen zich voelen en wil ze helpen.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">🌟</div>
+        <div class="trait-name">Leiderschap</div>
+        <p class="trait-desc">Ik neem vaak initiatief en motiveer anderen, zonder per se dominant te zijn.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">⚖️</div>
+        <div class="trait-name">Idealistisch</div>
+        <p class="trait-desc">Ik wil dat dingen eerlijk en goed zijn — ik heb sterke waarden en normen.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">🌊</div>
+        <div class="trait-name">Turbulent (T)</div>
+        <p class="trait-desc">Ik denk soms veel na over mezelf, kan gevoelig zijn voor stress, maar wil mezelf constant verbeteren.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">✍️</div>
+        <div class="trait-name">Emoties</div>
+        <p class="trait-desc">Ik voel diep, maar vind het soms lastig om het te uiten. Ik zoek manieren — zoals schrijven — om het toch kwijt te kunnen.</p>
+      </div>
+    </div>
+
+    <div class="smart-block reveal" style="margin-top:1.5rem;">
+      <h3 class="smart-goal-title" style="font-size:1.1rem;">In school</h3>
+      <div class="smart-rows" style="gap:0.7rem;">
+        <p class="smart-content-text">✔ &nbsp;<strong style="color:var(--rose-soft)">Verantwoordelijk</strong> — ik neem school serieus</p>
+        <p class="smart-content-text">✔ &nbsp;<strong style="color:var(--rose-soft)">Doelgericht</strong> — ik wil slagen en werk daar echt naartoe</p>
+        <p class="smart-content-text">✔ &nbsp;<strong style="color:var(--rose-soft)">Teamspeler</strong> — groepsopdrachten gaan mij meestal makkelijk af</p>
+        <p class="smart-content-text">⚠ &nbsp;<strong style="color:var(--muted)">Valkuil</strong> — overdenken en stressen als dingen zich opstapelen</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KERNKWALITEITEN -->
+  <section id="kernkwaliteiten">
+    <p class="section-label reveal">Mijn fundament</p>
+    <h2 class="section-title reveal">Kern<em>kwaliteiten</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="kk-list">
+      <div class="kk-item reveal">
+        <div class="kk-num">01</div>
+        <div>
+          <div class="kk-name">Doorzettingsvermogen</div>
+          <p class="kk-desc">Ik blijf doorgaan, ook als iets moeilijk is — of het nu gaat om trainen, school combineren of nieuwe skills leren.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">02</div>
+        <div>
+          <div class="kk-name">Discipline</div>
+          <p class="kk-desc">Ik zet school altijd op nummer één, maar maak ook tijd vrij voor ontspanning en herstel.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">03</div>
+        <div>
+          <div class="kk-name">Empathie</div>
+          <p class="kk-desc">Ik voel anderen goed aan en ben betrokken. Dat helpt me enorm in teams — zoals bij badminton doubles.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">04</div>
+        <div>
+          <div class="kk-name">Motivatie &amp; Drive</div>
+          <p class="kk-desc">Ik wil beter worden — of het nu sport, school of mezelf betreft. Ik heb echt de "ik wil groeien" mindset.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">05</div>
+        <div>
+          <div class="kk-name">Sociaal &amp; Zelfbewust</div>
+          <p class="kk-desc">Ik ben outgoing, maar denk ook diep na over mezelf en mijn handelen.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">06</div>
+        <div>
+          <div class="kk-name">Leergierigheid</div>
+          <p class="kk-desc">Ik wil mezelf verbeteren in sport, school en in het leven. Ik sta altijd open om te groeien.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>Jeaney Danoe</strong> &nbsp;·&nbsp; HLO Ochtend Cohort 2026</p>
+    <p style="margin-top:0.4rem;">Polytechnic College Suriname &nbsp;·&nbsp; NBW 1 &nbsp;·&nbsp; Docent: Mw. Ooft</p>
+    <p style="margin-top:0.4rem; color: #4a3030;">Inleverdatum: 19 maart 2026</p>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
