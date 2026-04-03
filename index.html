@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Portfolio – Jeaney Danoe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Base & Variables ─────────────────────────────────── */
+    :root {
+      --bg:        #0e0b0b;
+      --surface:   #181212;
+      --card:      #1f1818;
+      --border:    #2e2020;
+      --rose:      #c9706e;
+      --rose-soft: #e0a09e;
+      --rose-dim:  #3d1c1c;
+      --text:      #e8dede;
+      --muted:     #8c7a7a;
+      --radius:    14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--rose-dim); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--rose); }
+
+    /* ── Nav ──────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 2rem;
+      background: rgba(14, 11, 11, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--rose-soft);
+      letter-spacing: 0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--rose-soft); }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--rose-soft);
+      border-radius: 2px;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: fixed;
+      top: 58px; left: 0; right: 0;
+      z-index: 99;
+      padding: 1rem 2rem;
+    }
+
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--rose-soft); }
+
+    /* ── Hero ─────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 30%, rgba(201,112,110,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(201,112,110,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .hero-tag {
+      font-size: 0.78rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      animation: fadeUp 0.8s 0.1s ease both;
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--rose-soft);
+    }
+
+    .hero-sub {
+      margin-top: 1.5rem;
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 400px;
+      animation: fadeUp 0.8s 0.2s ease both;
+    }
+
+    .hero-meta {
+      margin-top: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .meta-chip {
+      background: var(--rose-dim);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-size: 0.78rem;
+      color: var(--rose-soft);
+      letter-spacing: 0.05em;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: fadeIn 1.5s 1s ease both;
+    }
+
+    .scroll-hint::after {
+      content: '';
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--rose), transparent);
+      animation: pulse 2s infinite;
+    }
+
+    /* ── Sections ─────────────────────────────────────────── */
+    section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 5rem 2rem;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--rose-soft);
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(to right, var(--rose), transparent);
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    /* ── SWOTT Grid ───────────────────────────────────────── */
+    .swott-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+
+    .swott-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.6rem 1.6rem 1.8rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .swott-card:hover {
+      border-color: var(--rose);
+      transform: translateY(-3px);
+    }
+
+    .swott-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--rose), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .swott-card:hover::before { opacity: 1; }
+
+    .swott-letter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--rose-dim);
+      margin-bottom: 0.5rem;
+      transition: color 0.3s;
+    }
+
+    .swott-card:hover .swott-letter { color: var(--rose); }
+
+    .swott-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      margin-bottom: 0.8rem;
+    }
+
+    .swott-text {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── SMART Cards ──────────────────────────────────────── */
+    .smart-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .smart-goal-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--rose-soft);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .smart-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .smart-row {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .smart-badge {
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: var(--rose-dim);
+      border: 1px solid var(--rose);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--rose-soft);
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .smart-content-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 0.25rem;
+    }
+
+    .smart-content-text {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── Personality ──────────────────────────────────────── */
+    .personality-hero {
+      background: linear-gradient(135deg, var(--rose-dim) 0%, var(--card) 100%);
+      border: 1px solid var(--rose);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .personality-type {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--rose-soft);
+      line-height: 1;
+    }
+
+    .personality-name {
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .trait-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .trait-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem;
+      transition: border-color 0.3s;
+    }
+
+    .trait-card:hover { border-color: var(--rose); }
+
+    .trait-icon {
+      font-size: 1.4rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .trait-name {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .trait-desc {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── Kernkwaliteiten ──────────────────────────────────── */
+    .kk-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .kk-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 1.2rem;
+      align-items: center;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .kk-item:hover {
+      border-color: var(--rose);
+      transform: translateX(4px);
+    }
+
+    .kk-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--rose-dim);
+      line-height: 1;
+      transition: color 0.3s;
+    }
+
+    .kk-item:hover .kk-num { color: var(--rose); }
+
+    .kk-name {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      margin-bottom: 0.25rem;
+    }
+
+    .kk-desc {
+      font-size: 0.86rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ───────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 3rem 2rem 4rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.05em;
+    }
+
+    footer strong {
+      color: var(--rose-soft);
+      font-weight: 400;
+    }
+
+    /* ── STARR ────────────────────────────────────────────── */
+    .starr-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .starr-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.6rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .starr-card:hover {
+      border-color: var(--rose);
+      transform: translateY(-3px);
+    }
+
+    .starr-letter {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--rose-dim);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+      transition: color 0.3s;
+    }
+
+    .starr-card:hover .starr-letter { color: var(--rose); }
+
+    .starr-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rose-soft);
+      margin-bottom: 0.7rem;
+    }
+
+    .starr-text {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* ── PAP / POP Table ──────────────────────────────────── */
+    .plan-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.86rem;
+    }
+
+    .plan-table th {
+      background: var(--rose-dim);
+      color: var(--rose-soft);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.85rem 1rem;
+      text-align: left;
+      border: 1px solid var(--border);
+      font-weight: 500;
+    }
+
+    .plan-table td {
+      padding: 1rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      vertical-align: top;
+      line-height: 1.6;
+      background: var(--card);
+    }
+
+    .plan-table tr:hover td { background: #221a1a; }
+
+    .plan-table td:first-child {
+      color: var(--rose-soft);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .plan-table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Wapenschild ──────────────────────────────────────── */
+    .wapen-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .wapen-shield-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .wapen-shield-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    .wapen-motto {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--rose-soft);
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.04em;
+    }
+
+    .wapen-symbol {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 0.8rem;
+      transition: border-color 0.3s;
+    }
+
+    .wapen-symbol:hover { border-color: var(--rose); }
+
+    .wapen-symbol-title {
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 0.3rem;
+    }
+
+    .wapen-symbol-text {
+      font-size: 0.84rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .wapen-colors {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .color-chip {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.76rem;
+      color: var(--muted);
+    }
+
+    .color-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 680px) {
+      .wapen-container { grid-template-columns: 1fr; }
+      .nav-links { gap: 1rem; font-size: 0.72rem; }
+    }
+
+    /* ── Animations ───────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50%       { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ───────────────────────────────────────── */
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      nav { padding: 1rem 1.4rem; }
+
+      section { padding: 4rem 1.4rem; }
+
+      .swott-grid { grid-template-columns: 1fr; }
+
+      .smart-row { grid-template-columns: 30px 1fr; }
+
+      .trait-grid { grid-template-columns: 1fr; }
+
+      .kk-item { grid-template-columns: 34px 1fr; gap: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">Jeaney Danoe</a>
+    <ul class="nav-links">
+      <li><a href="#swott">SWOTT</a></li>
+      <li><a href="#smart">SMART</a></li>
+      <li><a href="#persoonlijkheid">Persoonlijkheid</a></li>
+      <li><a href="#kernkwaliteiten">Kernkwaliteiten</a></li>
+      <li><a href="#starr">STARR</a></li>
+      <li><a href="#pap">PAP</a></li>
+      <li><a href="#wapenschild">Wapenschild</a></li>
+      <li><a href="#pop">POP</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#swott" onclick="closeMenu()">SWOTT</a>
+    <a href="#smart" onclick="closeMenu()">SMART</a>
+    <a href="#persoonlijkheid" onclick="closeMenu()">Persoonlijkheid</a>
+    <a href="#kernkwaliteiten" onclick="closeMenu()">Kernkwaliteiten</a>
+    <a href="#starr" onclick="closeMenu()">STARR</a>
+    <a href="#pap" onclick="closeMenu()">PAP</a>
+    <a href="#wapenschild" onclick="closeMenu()">Wapenschild</a>
+    <a href="#pop" onclick="closeMenu()">POP</a>
+  </div>
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="hero-bg"></div>
+    <p class="hero-tag">NBW 1 &nbsp;·&nbsp; E-Portfolio 2026</p>
+    <h1 class="hero-name">Jeaney<br /><em>Danoe</em></h1>
+    <p class="hero-sub">HLO Ochtend Cohort 2026 &nbsp;·&nbsp; Polytechnic College Suriname</p>
+    <div class="hero-meta">
+      <span class="meta-chip">SWOTT-analyse</span>
+      <span class="meta-chip">SMART-doelen</span>
+      <span class="meta-chip">ENFJ-T</span>
+      <span class="meta-chip">Kernkwaliteiten</span>
+      <span class="meta-chip">STARR</span>
+      <span class="meta-chip">PAP</span>
+      <span class="meta-chip">Wapenschild</span>
+      <span class="meta-chip">POP</span>
+    </div>
+    <div class="scroll-hint">Scroll</div>
+  </div>
+
+  <!-- SWOTT -->
+  <section id="swott">
+    <p class="section-label reveal">Zelfanalyse</p>
+    <h2 class="section-title reveal">SWOTT<em>-analyse</em></h2>
+    <div class="section-divider reveal"></div>
+    <div class="swott-grid">
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">S</div>
+        <div class="swott-label">Strength · Sterkte</div>
+        <p class="swott-text">Discipline is een van mijn sterkste eigenschappen. Wanneer ik een doel heb, zet ik alles op alles en blijf ik doorzetten tot ik het op een goede en keurige manier heb bereikt.</p>
+      </div>
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">W</div>
+        <div class="swott-label">Weakness · Zwakte</div>
+        <p class="swott-text">Ik merk altijd op dat ik mezelf vergelijk met anderen — of het nu gaat om mijn uiterlijk, prestaties in sport of op school. Dit heb ik al van jongs af aan.</p>
+      </div>
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">O</div>
+        <div class="swott-label">Opportunities · Kansen</div>
+        <p class="swott-text">Ik wil graag mijn woordenschat uitbreiden en met meer zelfvertrouwen iets goed en correct kunnen uitleggen of vertellen.</p>
+      </div>
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">T</div>
+        <div class="swott-label">Threats · Bedreigingen</div>
+        <p class="swott-text">Door een blessure ervaar ik soms moeilijkheden bij het behalen van sportdoelen. Mijn focus ligt meer op studie, waardoor ik minder train — maar dit leidt wel tot goede schoolresultaten.</p>
+      </div>
+
+      <div class="swott-card reveal">
+        <div class="swott-letter">T</div>
+        <div class="swott-label">Trends</div>
+        <p class="swott-text">Oudere generaties denken dat jongeren "te veel op de telefoon zijn", terwijl wij juist leren via YouTube, TikTok, Google en ChatGPT. Moderne technologie helpt mij enorm bij mijn leerproces.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SMART -->
+  <section id="smart">
+    <p class="section-label reveal">Persoonlijke ontwikkeling</p>
+    <h2 class="section-title reveal">SMART<em>-doelen</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <!-- Doel 1 -->
+    <div class="smart-block reveal">
+      <h3 class="smart-goal-title">Doel 1 — Beter omgaan met mijn emoties</h3>
+      <div class="smart-rows">
+        <div class="smart-row">
+          <div class="smart-badge">S</div>
+          <div>
+            <div class="smart-content-label">Specifiek</div>
+            <p class="smart-content-text">Ik wil beter omgaan met mijn emoties en ze beter uiten.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">M</div>
+          <div>
+            <div class="smart-content-label">Meetbaar</div>
+            <p class="smart-content-text">Als ik me op een bepaalde manier voel — blij, verdrietig of in een dip — schrijf ik mijn gevoelens op in mijn notities. Voor mij is dat de beste manier om mijn emoties te uiten.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">A</div>
+          <div>
+            <div class="smart-content-label">Acceptabel</div>
+            <p class="smart-content-text">Ik denk dat mijn doel haalbaar is, maar omdat ik het moeilijk vind om mijn emoties te uiten en er niet graag met anderen over praat, gaat het niet makkelijk zijn.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">R</div>
+          <div>
+            <div class="smart-content-label">Realistisch</div>
+            <p class="smart-content-text">Ook al heb ik het druk, ik zal proberen om wat meer over mijn gevoelens te schrijven.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">T</div>
+          <div>
+            <div class="smart-content-label">Tijdgebonden</div>
+            <p class="smart-content-text">Voordat ik ouder/volwassen word, wil ik al weten hoe ik omga met mijn emoties.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doel 2 -->
+    <div class="smart-block reveal">
+      <h3 class="smart-goal-title">Doel 2 — Beter worden in multi-tasken</h3>
+      <div class="smart-rows">
+        <div class="smart-row">
+          <div class="smart-badge">S</div>
+          <div>
+            <div class="smart-content-label">Specifiek</div>
+            <p class="smart-content-text">Ik wil school, sport en mijn vrije tijd beter combineren, zodat taken niet ophopen en ik minder stress ervaar.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">M</div>
+          <div>
+            <div class="smart-content-label">Meetbaar</div>
+            <p class="smart-content-text">Ik probeer elke dag een planning te maken in mijn notes op mijn telefoon van wat ik die dag moet doen.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">A</div>
+          <div>
+            <div class="smart-content-label">Acceptabel</div>
+            <p class="smart-content-text">Ik gebruik mijn notes/agenda om mijn schema beter te overzien, al doe ik dit nog niet elke dag consequent.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">R</div>
+          <div>
+            <div class="smart-content-label">Realistisch</div>
+            <p class="smart-content-text">Omdat ik al gewend ben om school en sport te combineren, kan ik dit verbeteren door beter te plannen.</p>
+          </div>
+        </div>
+        <div class="smart-row">
+          <div class="smart-badge">T</div>
+          <div>
+            <div class="smart-content-label">Tijdgebonden</div>
+            <p class="smart-content-text">Binnen 1 maand wil ik merken dat ik minder stress heb en alles beter kan combineren.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSOONLIJKHEID -->
+  <section id="persoonlijkheid">
+    <p class="section-label reveal">Wie ben ik</p>
+    <h2 class="section-title reveal">Persoonlijk<em>heidstest</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="personality-hero reveal">
+      <div class="personality-type">ENFJ-T</div>
+      <div class="personality-name">De Pleitbezorger · The Advocate</div>
+    </div>
+
+    <div class="trait-grid">
+      <div class="trait-card reveal">
+        <div class="trait-icon">🤝</div>
+        <div class="trait-name">Sociaal &amp; Warm</div>
+        <p class="trait-desc">Ik ben goed met mensen, maak makkelijk connecties en anderen voelen zich snel op hun gemak bij mij.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">💛</div>
+        <div class="trait-name">Empathisch</div>
+        <p class="trait-desc">Ik voel goed aan hoe anderen zich voelen en wil ze helpen.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">🌟</div>
+        <div class="trait-name">Leiderschap</div>
+        <p class="trait-desc">Ik neem vaak initiatief en motiveer anderen, zonder per se dominant te zijn.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">⚖️</div>
+        <div class="trait-name">Idealistisch</div>
+        <p class="trait-desc">Ik wil dat dingen eerlijk en goed zijn — ik heb sterke waarden en normen.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">🌊</div>
+        <div class="trait-name">Turbulent (T)</div>
+        <p class="trait-desc">Ik denk soms veel na over mezelf, kan gevoelig zijn voor stress, maar wil mezelf constant verbeteren.</p>
+      </div>
+      <div class="trait-card reveal">
+        <div class="trait-icon">✍️</div>
+        <div class="trait-name">Emoties</div>
+        <p class="trait-desc">Ik voel diep, maar vind het soms lastig om het te uiten. Ik zoek manieren — zoals schrijven — om het toch kwijt te kunnen.</p>
+      </div>
+    </div>
+
+    <div class="smart-block reveal" style="margin-top:1.5rem;">
+      <h3 class="smart-goal-title" style="font-size:1.1rem;">In school</h3>
+      <div class="smart-rows" style="gap:0.7rem;">
+        <p class="smart-content-text">✔ &nbsp;<strong style="color:var(--rose-soft)">Verantwoordelijk</strong> — ik neem school serieus</p>
+        <p class="smart-content-text">✔ &nbsp;<strong style="color:var(--rose-soft)">Doelgericht</strong> — ik wil slagen en werk daar echt naartoe</p>
+        <p class="smart-content-text">✔ &nbsp;<strong style="color:var(--rose-soft)">Teamspeler</strong> — groepsopdrachten gaan mij meestal makkelijk af</p>
+        <p class="smart-content-text">⚠ &nbsp;<strong style="color:var(--muted)">Valkuil</strong> — overdenken en stressen als dingen zich opstapelen</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KERNKWALITEITEN -->
+  <section id="kernkwaliteiten">
+    <p class="section-label reveal">Mijn fundament</p>
+    <h2 class="section-title reveal">Kern<em>kwaliteiten</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="kk-list">
+      <div class="kk-item reveal">
+        <div class="kk-num">01</div>
+        <div>
+          <div class="kk-name">Doorzettingsvermogen</div>
+          <p class="kk-desc">Ik blijf doorgaan, ook als iets moeilijk is — of het nu gaat om trainen, school combineren of nieuwe skills leren.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">02</div>
+        <div>
+          <div class="kk-name">Discipline</div>
+          <p class="kk-desc">Ik zet school altijd op nummer één, maar maak ook tijd vrij voor ontspanning en herstel.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">03</div>
+        <div>
+          <div class="kk-name">Empathie</div>
+          <p class="kk-desc">Ik voel anderen goed aan en ben betrokken. Dat helpt me enorm in teams — zoals bij badminton doubles.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">04</div>
+        <div>
+          <div class="kk-name">Motivatie &amp; Drive</div>
+          <p class="kk-desc">Ik wil beter worden — of het nu sport, school of mezelf betreft. Ik heb echt de "ik wil groeien" mindset.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">05</div>
+        <div>
+          <div class="kk-name">Sociaal &amp; Zelfbewust</div>
+          <p class="kk-desc">Ik ben outgoing, maar denk ook diep na over mezelf en mijn handelen.</p>
+        </div>
+      </div>
+      <div class="kk-item reveal">
+        <div class="kk-num">06</div>
+        <div>
+          <div class="kk-name">Leergierigheid</div>
+          <p class="kk-desc">Ik wil mezelf verbeteren in sport, school en in het leven. Ik sta altijd open om te groeien.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STARR -->
+  <section id="starr">
+    <p class="section-label reveal">Ervaringsgericht leren</p>
+    <h2 class="section-title reveal">STARR<em>-analyse</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="starr-grid">
+      <div class="starr-card reveal">
+        <div class="starr-letter">S</div>
+        <div class="starr-label">Situatie</div>
+        <p class="starr-text">Tijdens een presentatie op school moest ik voor de klas een onderwerp uitleggen. Ik was heel erg zenuwachtig omdat ik niet graag voor een groep praat en bang was om fouten te maken of alles in een flits te vergeten.</p>
+      </div>
+
+      <div class="starr-card reveal">
+        <div class="starr-letter">T</div>
+        <div class="starr-label">Taak</div>
+        <p class="starr-text">Mijn taak was om mijn presentatie duidelijk en zelfverzekerd over te brengen, zodat mijn klasgenoten het onderwerp goed konden begrijpen.</p>
+      </div>
+
+      <div class="starr-card reveal">
+        <div class="starr-letter">A</div>
+        <div class="starr-label">Actie</div>
+        <p class="starr-text">Ik heb me goed voorbereid door mijn tekst meerdere keren te oefenen. Tijdens de presentatie probeerde ik rustig te praten en oogcontact te maken. Ik heb het onderwerp zoveel mogelijk in mijn eigen woorden uitgelegd zodat het makkelijker uit mij uitkwam.</p>
+      </div>
+
+      <div class="starr-card reveal">
+        <div class="starr-letter">R</div>
+        <div class="starr-label">Resultaat</div>
+        <p class="starr-text">De presentatie ging uiteindelijk beter dan ik had verwacht. Ik kon mijn verhaal goed vertellen en kreeg positieve reacties van mijn klasgenoten en docenten.</p>
+      </div>
+
+      <div class="starr-card reveal">
+        <div class="starr-letter">R</div>
+        <div class="starr-label">Reflectie</div>
+        <p class="starr-text">Ik heb geleerd dat mijn zenuwen minder erg zijn dan ik denk en dat goede voorbereiding echt helpt. Volgende keer wil ik nog meer proberen ontspannen te blijven en iets minder uit mijn hoofd leren, zodat het natuurlijker klinkt.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAP -->
+  <section id="pap">
+    <p class="section-label reveal">Toekomstplanning</p>
+    <h2 class="section-title reveal">PAP<em>-analyse</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="plan-table-wrap reveal">
+      <table class="plan-table">
+        <thead>
+          <tr>
+            <th>Doel</th>
+            <th>Acties</th>
+            <th>Planning</th>
+            <th>Hulpmiddelen</th>
+            <th>Evaluatie</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Deze opleiding afronden</td>
+            <td>Elke week een planning maken voor schoolwerk en toetsen. Bij moeilijke vakken extra uitleg vragen aan docenten of medestudenten. Huiswerk en opdrachten op tijd inleveren.</td>
+            <td>Maandelijks checken of ik alles op schema heb en bijsturen waar nodig.</td>
+            <td>Agenda, docenten, medestudenten.</td>
+            <td>Aan het einde van elk semester kijken of ik mijn cijfers haal en of ik op schema lig om de opleiding succesvol af te ronden.</td>
+          </tr>
+          <tr>
+            <td>Stabiele baan na mijn studie</td>
+            <td>Oriënteren op beroepen en bedrijven die bij mij passen. Stage lopen of werkervaring opdoen tijdens de opleiding. CV en motivatiebrief opbouwen en verbeteren.</td>
+            <td>Vanaf het begin van het laatste studiejaar actief vacatures bekijken en sollicitaties versturen.</td>
+            <td>Loopbaanbegeleiding, vacaturesites, netwerk van vrienden/familie.</td>
+            <td>Checken of ik sollicitaties verstuur, reacties krijg en of ik mijn doelen voor werk kan bereiken.</td>
+          </tr>
+          <tr>
+            <td>Meer zelfvertrouwen bij presenteren</td>
+            <td>Presentaties van tevoren meerdere keren oefenen, hardop en voor vrienden of familie. Video-opnames maken om te zien waar ik kan verbeteren. Focus op ademhaling en lichaamshouding.</td>
+            <td>Minstens 1 presentatie per maand oefenen buiten de les om.</td>
+            <td>Feedback van docenten, vrienden, video-opnames, online tutorials.</td>
+            <td>Na elke presentatie reflecteren: wat ging goed, waar kan ik zelfverzekerder zijn, wat neem ik mee voor de volgende keer.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- WAPENSCHILD -->
+  <section id="wapenschild">
+    <p class="section-label reveal">Persoonlijke identiteit</p>
+    <h2 class="section-title reveal">Persoonlijk<em> Wapenschild</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="wapen-container">
+      <div class="wapen-shield-wrap reveal">
+        <!-- SVG representation of the coat of arms shield -->
+        <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" style="background:#0e0b0b;display:block;width:100%;">
+          <!-- Shield shape -->
+          <defs>
+            <clipPath id="shieldClip">
+              <path d="M200 460 C200 460 40 380 40 220 L40 80 L200 60 L360 80 L360 220 C360 380 200 460 200 460Z"/>
+            </clipPath>
+            <linearGradient id="goldBorder" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d4a847"/>
+              <stop offset="100%" stop-color="#8b6914"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Shield border -->
+          <path d="M200 460 C200 460 36 378 36 218 L36 76 L200 56 L364 76 L364 218 C364 378 200 460 200 460Z" fill="url(#goldBorder)" />
+          <!-- Shield body -->
+          <path d="M200 452 C200 452 44 374 44 220 L44 84 L200 64 L356 84 L356 220 C356 374 200 452 200 452Z" fill="#111" clip-path="url(#shieldClip)" />
+
+          <!-- Quadrant dividers -->
+          <line x1="200" y1="64" x2="200" y2="430" stroke="#d4a847" stroke-width="2" clip-path="url(#shieldClip)"/>
+          <line x1="44" y1="248" x2="356" y2="248" stroke="#d4a847" stroke-width="2" clip-path="url(#shieldClip)"/>
+
+          <!-- Top-left: Green (Groeien - Oak tree) -->
+          <rect x="44" y="64" width="156" height="184" fill="#1a3d1a" clip-path="url(#shieldClip)"/>
+          <text x="122" y="170" font-size="52" text-anchor="middle" fill="#2d6a2d" font-family="serif">🌳</text>
+          <text x="122" y="230" font-size="10" text-anchor="middle" fill="#4a9a4a" font-family="sans-serif" letter-spacing="2">GROEIEN</text>
+
+          <!-- Top-right: Orange (Leren - Book) -->
+          <rect x="200" y="64" width="156" height="184" fill="#3d2200" clip-path="url(#shieldClip)"/>
+          <text x="278" y="170" font-size="52" text-anchor="middle" fill="#cc7700" font-family="serif">📖</text>
+          <text x="278" y="230" font-size="10" text-anchor="middle" fill="#e89a44" font-family="sans-serif" letter-spacing="2">LEREN</text>
+
+          <!-- Bottom-left: Dark blue (Steenbok - Stars) -->
+          <rect x="44" y="248" width="156" height="184" fill="#0d1a3d" clip-path="url(#shieldClip)"/>
+          <text x="122" y="355" font-size="52" text-anchor="middle" fill="#2244aa" font-family="serif">🐐</text>
+          <text x="122" y="410" font-size="10" text-anchor="middle" fill="#4466cc" font-family="sans-serif" letter-spacing="2">STEENBOK</text>
+
+          <!-- Bottom-right: Grey (Presteren - Gear) -->
+          <rect x="200" y="248" width="156" height="184" fill="#222222" clip-path="url(#shieldClip)"/>
+          <text x="278" y="355" font-size="52" text-anchor="middle" fill="#888" font-family="serif">⚙️</text>
+          <text x="278" y="410" font-size="10" text-anchor="middle" fill="#aaa" font-family="sans-serif" letter-spacing="2">PRESTEREN</text>
+
+          <!-- Crown on top -->
+          <text x="200" y="58" font-size="36" text-anchor="middle" fill="#d4a847">👑</text>
+
+          <!-- Banner / motto -->
+          <rect x="60" y="438" width="280" height="32" rx="6" fill="#1a1010" stroke="#d4a847" stroke-width="1.5"/>
+          <text x="200" y="459" font-size="11" text-anchor="middle" fill="#d4a847" font-family="serif" letter-spacing="2" font-style="italic">LEREN, GROEIEN, PRESTEREN</text>
+        </svg>
+      </div>
+
+      <div>
+        <div class="wapen-motto reveal">"Leren, Groeien, Presteren"</div>
+
+        <p class="smart-content-text reveal" style="margin-bottom:1.2rem;">
+          Mijn schild is gebaseerd op mijn sterrenbeeld de <strong style="color:var(--rose-soft)">Steenbok</strong>, die symbool staat voor mijn geboortemaand december en het vermogen om zowel met beide benen op de grond te staan als diep te duiken in mijn passies.
+        </p>
+
+        <div class="wapen-colors reveal">
+          <div class="color-chip"><div class="color-dot" style="background:#1a3d6e"></div>Donkerblauw – diepgang &amp; wijsheid</div>
+          <div class="color-chip"><div class="color-dot" style="background:#2d6a2d"></div>Groen – groei &amp; vooruitgang</div>
+          <div class="color-chip"><div class="color-dot" style="background:#cc7700"></div>Oranje – creativiteit &amp; vitaliteit</div>
+          <div class="color-chip"><div class="color-dot" style="background:#888"></div>Grijs/Goud – ambitie &amp; resultaten</div>
+        </div>
+
+        <div class="wapen-symbol reveal">
+          <div class="wapen-symbol-title">📖 Open Boek met Passer (Oranje) — Leren</div>
+          <p class="wapen-symbol-text">Kennis en precisie. Niet alleen informatie opnemen, maar deze op een gestructureerde manier toepassen.</p>
+        </div>
+
+        <div class="wapen-symbol reveal">
+          <div class="wapen-symbol-title">🌳 Eikenboom met Wortels (Groen) — Groeien</div>
+          <p class="wapen-symbol-text">Langzaam maar gestadig groeien vanuit een solide basis — typisch voor een Steenbok.</p>
+        </div>
+
+        <div class="wapen-symbol reveal">
+          <div class="wapen-symbol-title">⚙️ Tandwiel met Bergen (Grijs) — Presteren</div>
+          <p class="wapen-symbol-text">Actie en het mechanisme van succes. De bergen verwijzen naar de habitat van de Steenbok: de top bereiken door obstakels te overwinnen.</p>
+        </div>
+
+        <div class="wapen-symbol reveal">
+          <div class="wapen-symbol-title">🌿 Klimop &amp; Vlammen (Zijkanten)</div>
+          <p class="wapen-symbol-text">Klimop = doorzettingsvermogen en loyaliteit aan mezelf. De vlammen = innerlijke gedrevenheid en passie.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POP -->
+  <section id="pop">
+    <p class="section-label reveal">Persoonlijk ontwikkelingsplan</p>
+    <h2 class="section-title reveal">POP<em>-analyse</em></h2>
+    <div class="section-divider reveal"></div>
+
+    <div class="plan-table-wrap reveal">
+      <table class="plan-table">
+        <thead>
+          <tr>
+            <th>Doel</th>
+            <th>Acties</th>
+            <th>Planning</th>
+            <th>Hulpmiddelen</th>
+            <th>Evaluatie</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Mezelf minder vergelijken met anderen</td>
+            <td>
+              Herkennen wanneer ik mezelf begin te vergelijken. Dagelijks kort reflecteren in een notitieboekje over wat ik wél heb bereikt. Kleine persoonlijke doelen stellen en vieren als ik ze haal. Inspiratie halen uit anderen, maar mij niet meten aan hun prestaties.
+            </td>
+            <td>Elke week 5 minuten reflecteren op mijn vooruitgang. Maandelijks evalueren of ik het vergelijken minder doe.</td>
+            <td>Notitieboekje of app voor reflectie. Eventueel gesprekken met een mentor of vriend(in) voor feedback en tips.</td>
+            <td>Aan het einde van elke maand kijken hoeveel ik mezelf heb vergeleken met anderen en of ik meer focus op mijn eigen groei. Nagaan welke acties helpen en welke ik kan verbeteren.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p><strong>Jeaney Danoe</strong> &nbsp;·&nbsp; HLO Ochtend Cohort 2026</p>
+    <p style="margin-top:0.4rem;">Polytechnic College Suriname &nbsp;·&nbsp; NBW 1 &nbsp;·&nbsp; Docent: Mw. Ooft</p>
+    <p style="margin-top:0.4rem; color: #4a3030;">Inleverdatum: 19 maart 2026</p>
+  </footer>
+
+  <!-- JS -->
+  <script>
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMenu() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, 60);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
